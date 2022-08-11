@@ -1,55 +1,61 @@
+
+
 <?php
+   if(isset($_POST['enviar'])){ // si damos clic al botón calcular entonces ...
+                        
+        if($_POST['op'] === "1"){ // si esta activo el radiobutton sumar entonces ...
+            $resul = $_POST['potencia'] + $_POST['demanda']; // a la variable resul le asignamos la suma de los campos
+        }
+        elseif($_POST['op'] === "2"){ //sino, si esta activo el radio restar entonces ...
+            $resul = $_POST['potencia'] - $_POST['demanda'];
+        }
+        elseif($_POST['op'] === "3"){
+            $resul = $_POST['potencia'] * $_POST['demanda'];
+        }
+        else{
+            $resul = $_POST['potencia'] / $_POST['demanda'];
+        }
+        
+    }
+?>
+<!DOCTYPE html>
 
-use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Http\Request;
+<html lang="es">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Calculadora malota</title>
+    </head>
+    
+    <body>
+     <h2>Calculadora de calibres</h2>    
+     <form method="post"> 
+        <label>Dato de potencia</label>
+        <input name="potencia" type="text" pattern="[0-9.]+" placeholder="Ingrese dato de potencia" required autofocus/>
+        <br /><br /><label>Factor de demanda</label>
+        <input type="text" name="demanda" pattern="[0-9.]+" placeholder="Ingrese factor de demanda" required/>
+		
+		 <!-- <br /><br /><label>SUMAR</label>
+ <input type="radio" name="op" value="1" checked/>
+             -->
+ <br>
+ <br>
+ 
+ <label class="text">Tipo de red</label>
+ <br>
+ <input type="radio" name="op" value="2"/>
+ <label>Monofasica</label>
+ <br>       
+ <input type="radio" name="op" value="3"/>
+ <label>Bifasica</label>
+ <br>    
+ <input type="radio" name="op" value="4"/>
+ <label>Trifasica</label>
+		
+		<br /><br /><input type="submit" value="CALCULAR" name="enviar"/>
+	 </form>
+    </body>
+    <br /><br /><label>Resultado:</label>
+<input type="text" name="res" value="<?php if(isset($_POST['enviar'])){ echo $resul;} ?>" readonly>
+                  
 
-define('LARAVEL_START', microtime(true));
-
-/*
-|--------------------------------------------------------------------------
-| Check If The Application Is Under Maintenance
-|--------------------------------------------------------------------------
-|
-| If the application is in maintenance / demo mode via the "down" command
-| we will load this file so that any pre-rendered content can be shown
-| instead of starting the framework, which could cause an exception.
-|
-*/
-
-if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
-    require $maintenance;
-}
-
-/*
-|--------------------------------------------------------------------------
-| Register The Auto Loader
-|--------------------------------------------------------------------------
-|
-| Composer provides a convenient, automatically generated class loader for
-| this application. We just need to utilize it! We'll simply require it
-| into the script here so we don't need to manually load our classes.
-|
-*/
-
-require __DIR__.'/../vendor/autoload.php';
-
-/*
-|--------------------------------------------------------------------------
-| Run The Application
-|--------------------------------------------------------------------------
-|
-| Once we have the application, we can handle the incoming request using
-| the application's HTTP kernel. Then, we will send the response back
-| to this client's browser, allowing them to enjoy our application.
-|
-*/
-
-$app = require_once __DIR__.'/../bootstrap/app.php';
-
-$kernel = $app->make(Kernel::class);
-
-$response = $kernel->handle(
-    $request = Request::capture()
-)->send();
-
-$kernel->terminate($request, $response);
+</html>
